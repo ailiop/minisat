@@ -80,6 +80,10 @@ int main(int argc, char** argv)
         // Try to set resource limits:
         if (cpu_lim != 0) limitTime(cpu_lim);
         if (mem_lim != 0) limitMemory(mem_lim);
+
+        // ----------------------------------------
+        // INPUT
+        // ----------------------------------------
         
         if (argc == 1)
             printf("Reading from standard input... Use '--help' for help.\n");
@@ -108,7 +112,8 @@ int main(int argc, char** argv)
         // Change to signal-handlers that will only notify the solver and allow it to terminate
         // voluntarily:
         sigTerm(SIGINT_interrupt);
-       
+
+        // top-level simplify (may discover input in unsatisfiable)
         if (!S.simplify()){
             if (res != NULL) fprintf(res, "UNSAT\n"), fclose(res);
             if (S.verbosity > 0){
@@ -119,9 +124,13 @@ int main(int argc, char** argv)
             printf("UNSATISFIABLE\n");
             exit(20);
         }
+
+        // ----------------------------------------
+        // SOLVE
+        // ----------------------------------------
         
         vec<Lit> dummy;
-        lbool ret = S.solveLimited(dummy);
+        lbool ret = S.solveLimited(dummy); // <=== solver
         if (S.verbosity > 0){
             S.printStats();
             printf("\n"); }
