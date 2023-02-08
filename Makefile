@@ -148,7 +148,7 @@ $(BUILD_DIR)/release/bin/$(MINISAT) $(BUILD_DIR)/debug/bin/$(MINISAT) $(BUILD_DI
 $(BUILD_DIR)/release/bin/$(MINISAT_CORE) $(BUILD_DIR)/debug/bin/$(MINISAT_CORE) $(BUILD_DIR)/profile/bin/$(MINISAT_CORE) $(BUILD_DIR)/dynamic/bin/$(MINISAT_CORE):
 	$(ECHO) Linking Binary: $@
 	$(VERB) mkdir -p $(dir $@)
-	$(VERB) $(CXX) $^ $(MINISAT_LDFLAGS) $(LDFLAGS) -o $@
+	$(VERB) $(CXX) $^ $(MINISAT_LDFLAGS) $(LDFLAGS) -Wl,-rpath=$(libdir) -o $@
 
 ## Static Library rule
 %/lib/$(MINISAT_SLIB):
